@@ -1,0 +1,44 @@
+{
+  'name': 'Release',
+  'on': { 'release': { 'types': ['published'] } },
+  'permissions': { 'contents': 'write' },
+  'jobs':
+    {
+      'publish-release':
+        {
+          'runs-on': 'ubuntu-latest',
+          'steps':
+            [
+              { 'uses': 'actions/checkout@v4' },
+              {
+                'name': 'Setup Zig',
+                'uses': 'mlugg/setup-zig@v2',
+                'with': { 'version': '0.13.0' },
+              },
+              {
+                'name': 'Build',
+                'run': 'bash build.sh',
+              },
+              {
+                'name': 'Upload Artifacts for Run',
+                'uses': 'actions/upload-artifact@v4',
+                'with':
+                  {
+                    'name': 'valetudo-helper-felboot',
+                    'path': 'build/valetudo-helper-felboot-*'
+                  }
+              },
+              {
+                'name': 'Upload Release Assets',
+                'uses': 'softprops/action-gh-release@v2',
+                'env': { 'GITHUB_TOKEN': '${{ secrets.GITHUB_TOKEN }}' },
+                'with':
+                  {
+                    'files': 'build/valetudo-helper-felboot-*',
+                    'generate_release_notes': true,
+                  },
+              }
+            ],
+        },
+    },
+}
