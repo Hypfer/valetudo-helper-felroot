@@ -24,8 +24,8 @@
                 'uses': 'actions/upload-artifact@v4',
                 'with':
                   {
-                    'name': 'valetudo-helper-felboot',
-                    'path': 'build/valetudo-helper-felboot-*'
+                        'name': 'valetudo-helper-felroot',
+                        'path': 'build/valetudo-helper-felroot-*'
                   }
               },
               {
@@ -34,7 +34,7 @@
                 'env': { 'GITHUB_TOKEN': '${{ secrets.GITHUB_TOKEN }}' },
                 'with':
                   {
-                    'files': 'build/valetudo-helper-felboot-*',
+                        'files': 'build/valetudo-helper-felroot-*',
                     'generate_release_notes': true,
                   },
               }

@@ -1,10 +1,10 @@
-# valetudo-helper-felboot
+# valetudo-helper-felroot
 
 Asking people to compile a specifically patched version of sunxi-tools/xfel/etc. would be an exercise in futility.
 
 Therefore:
 
-`valetudo-helper-felboot` is a statically linked single binary tool that contains just enough FEL to do what is needed to root robots.
+`valetudo-helper-felroot` is a statically linked single binary tool that contains just enough FEL to do what is needed to root robots.
 
 For usage, simply download the latest binary from the releases section and execute it in a root shell on your linux laptop.<br/>
 For usage instructions, see the rooting guides on https://valetudo.cloud
@@ -23,6 +23,10 @@ Just like the C-Level of the corps building them.
 
 This project is just https://github.com/xboot/xfel cut down to what is required to do the thing.<br/>
 xfel is licensed under MIT.
+
+The sparse download/flash pipeline in src/main.c is a C port of the resparse logic
+from Android platform_system_core (fastboot.cpp, libsparse), licensed under BSD and Apache-2.0.<br/>
+See THIRD_PARTY_NOTICES for details.
 
 Additionally, the project vendors some version of libusb the LLM (likely wrongfully) thought would be the right choice.<br/>
 libusb is licensed under the LGPL-2.1.

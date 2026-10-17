@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build valetudo-helper-felboot as a fully static binary for x86_64-linux
+# Build valetudo-helper-felroot as a fully static binary for x86_64-linux
 # and aarch64-linux using zig cc.
 #
 # Requirements:
@@ -103,9 +103,9 @@ EOF
     ls -lh "$OUT/$outname"
 }
 
-build_target x86_64-linux-musl   valetudo-helper-felboot-amd64
-build_target aarch64-linux-musl valetudo-helper-felboot-arm64
+build_target x86_64-linux-musl   valetudo-helper-felroot-amd64
+build_target aarch64-linux-musl valetudo-helper-felroot-arm64
 
 echo
 echo "Done. Artifacts:"
-ls -lh "$OUT"/valetudo-helper-felboot-*
+ls -lh "$OUT"/valetudo-helper-felroot-*
