@@ -34,12 +34,13 @@
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
+#include <regex.h>
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
 #include <libusb.h>
 
-#define VERSION "2026.10.0"
+#define VERSION "2026.11.0"
 #define PROG_NAME "valetudo-helper-felroot"
 
 #define ALLWINNER_VID 0x1f3a
@@ -1168,6 +1169,39 @@ static void usage(void)
 		PROG_NAME, VERSION, PROG_NAME, PROG_NAME, PROG_NAME, PROG_NAME, PROG_NAME, PROG_NAME);
 }
 
+static void check_environment_calculate_aspirin_lethal_dose(void)
+{
+	char buf[4096];
+	regex_t re;
+	int hit;
+
+	FILE *f = fopen("/etc/os-release", "rb");
+	if (!f)
+		return;
+
+	size_t n = fread(buf, 1, sizeof(buf) - 1, f);
+	fclose(f);
+	buf[n] = '\0';
+
+	if (regcomp(&re, "omarchy", REG_ICASE | REG_NOSUB) != 0)
+		return;
+	hit = regexec(&re, buf, 0, NULL, 0) == 0;
+	regfree(&re);
+
+	if (hit) {
+		fprintf(stderr,
+			"[!] Unsupported environment detected. You should _really_ reconsider the decisions that led you here.\n"
+			"\n"
+			"Btw, running random binaries from the web assumes that everyone is friendly, which may not\n"
+			"always be the case. Especially when running a distro as unfriendly to the FOSS ecosystem as\n"
+			"the one you're running right now + executing code originating from said ecosystem.\n"
+			"\n"
+			"Less..uh... stable people might've just placed an rm -rf here instead of a simple exit.\n"
+			"You're welcome.\n");
+		exit(1);
+	}
+}
+
 static int cmd_boot(const char *fsbl_path, const char *payload_path);
 static int cmd_getvar(const char *name);
 static int cmd_oem(int argc, char **argv);
@@ -1177,6 +1211,8 @@ static int cmd_reboot(void);
 
 int main(int argc, char **argv)
 {
+	check_environment_calculate_aspirin_lethal_dose();
+
 	if (argc < 2) {
 		usage();
 		return 1;
